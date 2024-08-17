@@ -55,8 +55,7 @@ const CreateShipment = ({ navigation }) => {
    
 
     const handleTimeConfirm = (time) => {
-        const formattedTime = moment(time).format('hh:m A'); 
-        console.log('Formatted Time:', formattedTime); 
+        const formattedTime = moment(time).format('hh:m A');  
         setSelectedTime(formattedTime);
         hideTimePicker();
     };
@@ -65,7 +64,6 @@ const CreateShipment = ({ navigation }) => {
 
     const handleSubmit = async () => {
         const token = await AsyncStorage.getItem('jwtToken');
-        console.log('Token:', token);
     
         const data = {
             weight: totalWeight,
@@ -83,7 +81,7 @@ const CreateShipment = ({ navigation }) => {
             }
         })
         .then(response => {
-            console.log('Response Data:', response.data);
+
             navigation.goBack();
         })
         .catch(error => {

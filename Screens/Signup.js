@@ -22,27 +22,37 @@ const Signup = ({ navigation }) => {
         name,
         email,
         password,
-        user_type: userType.toLowerCase(), 
+        user_type: userType.toLowerCase(),
       }, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
+        timeout: 5000, // 5 seconds timeout for the request
       });
   
       if (response.status === 200) {
         const { token } = response.data;
         await AsyncStorage.setItem('userToken', token);
         Alert.alert("Signup Successful!", "You have been registered successfully.");
-        navigation.navigate('AdminDashboard');
+        navigation.navigate('Login');
       } else {
         Alert.alert("Signup Failed", response.data.message || "Something went wrong.");
       }
     } catch (error) {
-      Alert.alert("Network Error", "Please check your internet connection.");
+      if (error.response) {
+        // The request was made, but the server responded with a status code not in the range of 2xx
+        Alert.alert("Error", `Server responded with status ${error.response.status}: ${error.response.data.message || error.message}`);
+      } else if (error.request) {
+        // The request was made, but no response was received
+        Alert.alert("Network Error", "No response received. Please check your internet connection.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        Alert.alert("Error", `Error in request setup: ${error.message}`);
+      }
     }
   };
-
+  
   return (
     <NativeBaseProvider>
       <SafeAreaView style={styles.container}>
