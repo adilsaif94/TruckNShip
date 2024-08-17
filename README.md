@@ -45,9 +45,16 @@
 
 [Watch Full Video 2](https://github.com/user-attachments/assets/40428e21-a86e-470d-8f8b-acd808137721)
 
+<br><br/>
+<br><br/>
+<br><br/>
+# Database
+<br><br/>
+<br><br/>
 
 
+![Screenshot (59)](https://github.com/user-attachments/assets/ed3a18cb-5936-4bb3-90e1-512f83fc08c5)
 
-
+![Screenshot (58)](https://github.com/user-attachments/assets/3cb4af97-d17f-470b-bc51-6799b7ab567e)
 
 
