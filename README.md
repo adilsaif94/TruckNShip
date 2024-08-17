@@ -9,7 +9,7 @@
 <img src="https://github.com/user-attachments/assets/a78de8db-7f9e-420a-b6ac-6296c7797c24" alt="Screenshot_2024-08-17-18-31-37-92_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
 <br><br/>
 <br><br/>
-# Customer Login Flow
+# Customer Flow
 <br><br/>
 <img src="https://github.com/user-attachments/assets/a9899233-f9b2-4bcf-ba70-266a03b1ab8a" alt="Screenshot_2024-08-17-20-03-36-78_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -24,13 +24,18 @@
 <br><br/>
 <img src="https://github.com/user-attachments/assets/19c87139-103d-4b79-a986-f1a0f787b8a4" alt="Screenshot_2024-08-17-20-10-13-13_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
 
-<video width="600" controls>
-  <source src="https://github.com/user-attachments/assets/f346cb5f-cfb3-4115-964f-c5906ba2cc03" type="video/mp4">
-</video>
-
-
-
-https://github.com/user-attachments/assets/f346cb5f-cfb3-4115-964f-c5906ba2cc03
+<br><br/>
+<br><br/>
+<br><br/>
+# Admin Flow
+<br><br/>
+<br><br/>
+<img src="https://github.com/user-attachments/assets/a95e91f0-111e-4376-a073-0e53316d9d11" alt="Screenshot_2024-08-17-20-14-23-55_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/e207016d-5005-4478-af6a-c0de8873b807" alt="Screenshot_2024-08-17-20-14-17-61_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
+<br><br/>
+<br><br/>
+<img src="https://github.com/user-attachments/assets/e7ef6e3a-8513-4508-870c-568ad12bb647" alt="Screenshot_2024-08-17-20-14-12-28_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
 
 
 
