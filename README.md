@@ -1,15 +1,13 @@
 # Preview of Application
 <br><br/>
-<br><br/>
-<br><br/>
-# Login & Signup
+### Login & Signup
 <br><br/>
 <img src="https://github.com/user-attachments/assets/ec5d5ebd-0a3a-4ac0-b32f-baa8bdec06e9" alt="Screenshot_2024-08-17-17-45-02-56_1be1632cfeeb68e031b6f018c6f171ca" width="300" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://github.com/user-attachments/assets/a78de8db-7f9e-420a-b6ac-6296c7797c24" alt="Screenshot_2024-08-17-18-31-37-92_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
 <br><br/>
 <br><br/>
-# Customer Flow
+### Customer Flow
 <br><br/>
 <img src="https://github.com/user-attachments/assets/a9899233-f9b2-4bcf-ba70-266a03b1ab8a" alt="Screenshot_2024-08-17-20-03-36-78_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -31,7 +29,7 @@
 <br><br/>
 <br><br/>
 <br><br/>
-# Admin Flow
+### Admin Flow
 <br><br/>
 <br><br/>
 <img src="https://github.com/user-attachments/assets/a95e91f0-111e-4376-a073-0e53316d9d11" alt="Screenshot_2024-08-17-20-14-23-55_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
@@ -48,7 +46,7 @@
 <br><br/>
 <br><br/>
 <br><br/>
-# Database
+### Database
 <br><br/>
 <br><br/>
 
@@ -56,5 +54,38 @@
 ![Screenshot (59)](https://github.com/user-attachments/assets/ed3a18cb-5936-4bb3-90e1-512f83fc08c5)
 
 ![Screenshot (58)](https://github.com/user-attachments/assets/3cb4af97-d17f-470b-bc51-6799b7ab567e)
+
+<br><br/>
+<br><br/>
+<br><br/>
+## Getting Started
+
+This guide will help you set up and run the React Native frontend application along with connecting it to the backend API.
+
+### Prerequisites
+Before you begin, ensure you have met the following requirements:
+
+- **Node.js**: Make sure you have Node.js installed. You can download it from [Node.js official website](https://nodejs.org/).
+- **npm or Yarn**: You can use either npm or Yarn as your package manager. Install Yarn globally if you prefer using it:
+  ```bash
+   
+  npm install -g yarn
+  npm install -g react-native-cli
+ 
+### Installing Dependencies
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+npm install
+### To start 
+npx react-native run-android
+
+## API
+ http://{your_local_ip_address}:8000/api/shipments
+
+
+
+
+
+
 
 
