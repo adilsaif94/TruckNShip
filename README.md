@@ -26,23 +26,7 @@
 <br><br/>
 <br><br/>
 
-<video width="600" controls>
-  <source src="https://github.com/user-attachments/assets/364f86ae-3560-45da-8cda-f974dc726059" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-<br><br/>
-<br><br/>
-<video width="600" controls>
-  <source src="https://github.com/user-attachments/assets/152d6f25-9033-4653-aca0-7e3037e8eb34" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-
-
-
-
-
-
+[Watch Full Video 2](https://github.com/user-attachments/assets/152d6f25-9033-4653-aca0-7e3037e8eb34)
 
 <br><br/>
 <br><br/>
@@ -56,6 +40,13 @@
 <br><br/>
 <br><br/>
 <img src="https://github.com/user-attachments/assets/e7ef6e3a-8513-4508-870c-568ad12bb647" alt="Screenshot_2024-08-17-20-14-12-28_1be1632cfeeb68e031b6f018c6f171ca"  width="300" />
+<br><br/>
+<br><br/>
+
+[Watch Full Video 2](https://github.com/user-attachments/assets/40428e21-a86e-470d-8f8b-acd808137721)
+
+
+
 
 
 
