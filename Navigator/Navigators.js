@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 const Navigators = () => {
   return (
     <>
-      <StatusBar backgroundColor="#cd220b" barStyle="light-content" />
+      <StatusBar backgroundColor="#fc8019" barStyle="light-content" />
       <Stack.Navigator screenOptions={{ headerShown: false, }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={Signup} />

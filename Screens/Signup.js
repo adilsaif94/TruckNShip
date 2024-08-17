@@ -8,7 +8,7 @@ const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState(""); // New state for user type
+  const [userType, setUserType] = useState(""); 
   const { isOpen, onOpen, onClose } = useDisclose();
 
   const handleSignup = async () => {
@@ -22,7 +22,7 @@ const Signup = ({ navigation }) => {
         name,
         email,
         password,
-        user_type: userType.toLowerCase(), // Send user_type with the request
+        user_type: userType.toLowerCase(), 
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -78,13 +78,13 @@ const Signup = ({ navigation }) => {
           <View>
             <TouchableOpacity onPress={onOpen} style={styles.actionsheetView}>
               <Text style={styles.userTypeText}>
-                {userType || "Select User"} {/* Display selected type or placeholder */}
+                {userType || "Select User"} 
               </Text>
             </TouchableOpacity>
             <Actionsheet isOpen={isOpen} onClose={onClose}>
               <Actionsheet.Content backgroundColor="white">
                 <Actionsheet.Item
-                  backgroundColor="#cd220b"
+                  backgroundColor="#fc8019"
                   style={styles.actionsheetItem}
                   onPress={() => { 
                     setUserType("Customer"); 
@@ -94,7 +94,7 @@ const Signup = ({ navigation }) => {
                   <Text style={styles.centeredText}>Customer</Text>
                 </Actionsheet.Item>
                 <Actionsheet.Item
-                  backgroundColor="#cd220b"
+                  backgroundColor="#fc8019"
                   style={styles.actionsheetItem}
                   onPress={() => { 
                     setUserType("Admin"); 
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     textAlign: "center",
     paddingVertical: 30,
-    color: "#cd220b",
+    color: "#fc8019",
   },
   inputView: {
     gap: 20,
@@ -154,13 +154,13 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     paddingHorizontal: 20,
-    borderColor: "#cd220b",
+    borderColor: "#fc8019",
     borderWidth: 1,
     borderRadius: 10,
     backgroundColor: 'white'
   },
   button: {
-    backgroundColor: "#cd220b",
+    backgroundColor: "#fc8019",
     height: 45,
     borderColor: "gray",
     borderRadius: 15,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   signup: {
-    color: "#cd220b",
+    color: "#fc8019",
     fontSize: 15,
     fontWeight: '800',
     textDecorationLine: 'underline',
@@ -196,19 +196,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     paddingHorizontal: 20,
-    borderColor: "#cd220b",
-    justifyContent: "center", // Vertically center the text
+    borderColor: "#fc8019",
+    justifyContent: "center", 
     backgroundColor:'white'
   },
   userTypeText: {
     fontSize: 14,
   },
   actionsheetItem: {
-    marginVertical: 5, // Add margin between items
-    borderRadius: 10,  // Rounded corners,
-    alignItems: 'center',  // Center content horizontally
-    justifyContent: 'center', // Center content vertically
-    height: 50, // Set a fixed height to center text
+    marginVertical: 5, 
+    borderRadius: 10,  
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    height: 50, 
   },
   centeredText: {
     color: 'white',

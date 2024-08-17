@@ -1,26 +1,24 @@
 import { Alert, Image, SafeAreaView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // For storing the JWT token
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  // Check if user is already logged in when component mounts
+ 
   useEffect(() => {
     const checkLoginStatus = async () => {
       const token = await AsyncStorage.getItem('jwtToken');
       if (token) {
-        // Assuming you have a way to get user_type from token or a separate call
-        const user_type = await AsyncStorage.getItem('user_type'); // Replace with your actual logic
+        const user_type = await AsyncStorage.getItem('user_type'); 
         if (user_type && user_type.toLowerCase() === 'admin') {
           navigation.navigate('AdminDashboard');
         } else if (user_type && user_type.toLowerCase() === 'customer') {
           navigation.navigate('CustomerDashboard');
         } else {
-          // Handle invalid or missing user_type
           Alert.alert("Login Failed", "Invalid user type.");
         }
       }
@@ -52,7 +50,7 @@ const Login = ({ navigation }) => {
         if (token) {
           // Save token to AsyncStorage
           await AsyncStorage.setItem('jwtToken', token);
-          await AsyncStorage.setItem('user_type', user_type); // Save user_type to AsyncStorage
+          await AsyncStorage.setItem('user_type', user_type); 
 
           if (!user_type) {
             Alert.alert("Login Failed", "User type is not defined.");
@@ -76,7 +74,6 @@ const Login = ({ navigation }) => {
         Alert.alert("Login Failed", response.data.message || "Invalid username or password.");
       }
     } catch (error) {
-      console.error("Login Error:", error);
 
       if (error.response) {
         Alert.alert("Login Failed", error.response.data.message || "Invalid username or password.");
@@ -86,7 +83,7 @@ const Login = ({ navigation }) => {
     }
   };
 
-  // Example logout function
+ 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('jwtToken');
     await AsyncStorage.removeItem('user_type');
@@ -163,7 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     textAlign: "center",
     paddingVertical: 30,
-    color: "#cd220b",
+    color: "#fc8019",
   },
   inputView: {
     gap: 20,
@@ -174,7 +171,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     paddingHorizontal: 20,
-    borderColor: "#cd220b",
+    borderColor: "#fc8019",
     borderWidth: 1,
     borderRadius: 10,
     backgroundColor: 'white',
@@ -198,11 +195,11 @@ const styles = StyleSheet.create({
   },
   forgetText: {
     fontSize: 11,
-    color: "#cd220b",
+    color: "#fc8019",
     fontWeight: '500',
   },
   button: {
-    backgroundColor: "#cd220b",
+    backgroundColor: "#fc8019",
     height: 45,
     borderColor: "gray",
     borderRadius: 15,
@@ -227,7 +224,7 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   signup: {
-    color: "#cd220b",
+    color: "#fc8019",
     fontSize: 15,
     fontWeight: '800',
     textDecorationLine: 'underline',

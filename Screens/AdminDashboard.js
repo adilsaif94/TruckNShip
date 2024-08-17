@@ -1,15 +1,18 @@
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, Modal, TouchableOpacity, Pressable, Image, Linking } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Zocial from 'react-native-vector-icons/Zocial'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-const CustomerDashboard = ({ navigation }) => {
+const AdminDashboard = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [status, setStatus] = useState('Status');
     const [statusColor, setStatusColor] = useState('#f7cd23');
     const [selectedStatus, setSelectedStatus] = useState('Pending');
     const [selectedColor, setSelectedColor] = useState('#f7cd23');
+    const [shipments, setShipments] = useState(false);
+    const [selectedShipmentId, setSelectedShipmentId] = useState(null); 
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem('jwtToken');
@@ -26,26 +29,69 @@ const CustomerDashboard = ({ navigation }) => {
         setSelectedColor(color);
     };
 
-    const handleUpdate = () => {
-        setStatus(selectedStatus);
-        setStatusColor(selectedColor);
-        setModalVisible(false);
+    const handleUpdate = async () => {
+        const token = await AsyncStorage.getItem('jwtToken');
+        if (token && selectedShipmentId) {
+            try {
+                const response = await axios.put(
+                    `http://192.168.1.142:8000/api/shipments/${selectedShipmentId}/status`,
+                    { status: selectedStatus },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+    
+                if (response.status === 200) {
+                    const updatedShipments = shipments.map(shipment =>
+                        shipment.id === selectedShipmentId
+                            ? { ...shipment, status: selectedStatus }
+                            : shipment
+                    );
+                    setShipments(updatedShipments);
+                    setStatus(selectedStatus);
+                    setStatusColor(selectedColor);
+                    setModalVisible(false);
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+            }
+        }
     };
-
+    
     const handleCancel = () => {
         setModalVisible(false);
     };
 
     const handleSendEmail = () => {
-        const email = 'xyz@gmail.com'; // Replace with the recipient's email
-        // const subject = 'Your Subject Here';
-        // const body = 'Your email body here';
-
-        // const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const email = 'xyz@gmail.com'; 
         const mailto = `mailto:${email}`;
 
         Linking.openURL(mailto).catch((err) => console.log('Error:', err));
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = await AsyncStorage.getItem('jwtToken');
+                if (token) {
+                    const response = await axios.get('http://192.168.1.142:8000/api/all/shipments', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    if (response.data && response.data.data) {
+                        setShipments(response.data.data);
+                    } else {
+                        console.error('Unexpected response format:', response.data);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
 
     return (
@@ -55,7 +101,7 @@ const CustomerDashboard = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <View>
                         <Text style={styles.totalShip}>Total Shipment</Text>
-                        <Text style={styles.totalShip}>2</Text>
+                        <Text style={styles.totalShip}>{shipments.length}</Text>
                         <Text style={[styles.totalShip, { marginTop: 20 }]}>Total Driver</Text>
                         <Text style={styles.totalShip}>12</Text>
                     </View>
@@ -69,7 +115,7 @@ const CustomerDashboard = ({ navigation }) => {
                         <Text style={styles.totalShip}>Pending Request</Text>
                         <Text style={styles.totalShip}>2</Text>
                         <Text style={[styles.totalShip, { marginTop: 20 }]}>Complete Shipment</Text>
-                        <Text style={styles.totalShip}>$2505</Text>
+                        <Text style={styles.totalShip}>$5</Text>
                     </View>
                 </View>
             </View>
@@ -77,121 +123,55 @@ const CustomerDashboard = ({ navigation }) => {
             <Text style={styles.allShipment}>All Orders</Text>
 
             <ScrollView>
-                <View style={styles.cardContainer}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardHeaderText}>Name :- <Text style={styles.cardHeaderTextBold}>User</Text></Text>
-                        <Text style={styles.cardHeaderText}>Email :- <Text style={styles.cardHeaderTextBold}>xyz@gmail.com</Text></Text>
-                    </View>
+                {shipments && shipments.length > 0 ? (
+                    shipments.map((shipment, index) => (
+                        <View key={index} style={styles.cardContainer}>
+                            <View style={styles.cardHeader}>
+                                <Text style={styles.cardHeaderText}>Name :- <Text style={styles.cardHeaderTextBold}>{shipment.user.name}</Text></Text>
+                                <Text style={styles.cardHeaderText}>Email :- <Text style={styles.cardHeaderTextBold}>{shipment.user.email}</Text></Text>
+                            </View>
 
-                    <View style={styles.cardView}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.cardHeading}>Weight</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>500 KG</Text>
-                            <Text style={[styles.cardHeading, { marginTop: 20 }]}>Size</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>25 Mtr</Text>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.cardHeading}>Location</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>24 East, Japan</Text>
-                            <Text style={[styles.cardHeading, { marginTop: 20 }]}>Time</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>25-Dec-2024, 7:00AM</Text>
-                        </View>
-                    </View>
+                            <View style={styles.cardView}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <Text style={styles.cardHeading}>Weight</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>{shipment.weight} KG</Text>
+                                    <Text style={[styles.cardHeading, { marginTop: 20 }]}>Size</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>{shipment.size} Mtr</Text>
+                                </View>
+                                <View style={{ alignItems: 'center' }}>
+                                    <Text style={styles.cardHeading}>Location</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>{shipment.pickup_location}</Text>
+                                    <Text style={[styles.cardHeading, { marginTop: 20 }]}>Time</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>{shipment.shipment_date}, {shipment.shipment_time}</Text>
+                                </View>
+                            </View>
 
-                    <View style={styles.cardFooter}>
-                        <TouchableOpacity style={styles.updateButton} onPress={() => setModalVisible(true)}>
-                            <Text style={styles.updateButtonText}>Update The Shipment</Text>
-                        </TouchableOpacity>
+                            <View style={styles.cardFooter}>
+                                <TouchableOpacity style={styles.updateButton} onPress={() => {
+                                    setSelectedShipmentId(shipment.id); // Set the selected shipment ID
+                                    setModalVisible(true);
+                                }}>
+                                    <Text style={styles.updateButtonText}>Update The Shipment</Text>
+                                </TouchableOpacity>
 
-                        <View style={[styles.statusContainer, { backgroundColor: statusColor }]}>
-                            <Text style={styles.statusText}>{status}</Text>
-                        </View>
-                    </View>
+                                <View style={[styles.statusContainer, { backgroundColor: '#d8dada' }]}>
+                                    <Text style={styles.statusText}>{shipment.status}</Text>
+                                </View>
+                            </View>
 
-                    <TouchableOpacity onPress={handleSendEmail} style={{ marginBottom: 10, alignItems: 'flex-end', marginHorizontal: 18 }}>
-                        <View style={{ flexDirection: 'row', backgroundColor: '#deddd9', borderRadius: 8, padding: 4, paddingHorizontal: 10 }}>
-                            <Text style={{ fontSize: 14, fontWeight: '500' }}>Contact</Text>
-                            <Zocial name='email' color='#cd220b' size={18} style={{ marginLeft: 10 }} />
+                            <TouchableOpacity onPress={handleSendEmail} style={{ marginBottom: 10, alignItems: 'flex-end', marginHorizontal: 18 }}>
+                                <View style={{ flexDirection: 'row', backgroundColor: '#deddd9', borderRadius: 8, padding: 4, paddingHorizontal: 10 }}>
+                                    <Text style={{ fontSize: 14, fontWeight: '500' }}>Contact</Text>
+                                    <Zocial name='email' color='#fc8019' size={18} style={{ marginLeft: 10 }} />
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.cardContainer}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardHeaderText}>Name :- <Text style={styles.cardHeaderTextBold}>User</Text></Text>
-                        <Text style={styles.cardHeaderText}>Email :- <Text style={styles.cardHeaderTextBold}>xyz@gmail.com</Text></Text>
-                    </View>
-
-                    <View style={styles.cardView}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.cardHeading}>Weight</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>500 KG</Text>
-                            <Text style={[styles.cardHeading, { marginTop: 20 }]}>Size</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>25 Mtr</Text>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.cardHeading}>Location</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>24 East, Japan</Text>
-                            <Text style={[styles.cardHeading, { marginTop: 20 }]}>Time</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>25-Dec-2024, 7:00AM</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardFooter}>
-                        <TouchableOpacity style={styles.updateButton} onPress={() => setModalVisible(true)}>
-                            <Text style={styles.updateButtonText}>Update The Shipment</Text>
-                        </TouchableOpacity>
-
-                        <View style={[styles.statusContainer, { backgroundColor: statusColor }]}>
-                            <Text style={styles.statusText}>{status}</Text>
-                        </View>
-                    </View>
-
-                    <TouchableOpacity onPress={handleSendEmail} style={{ marginBottom: 10, alignItems: 'flex-end', marginHorizontal: 18 }}>
-                        <View style={{ flexDirection: 'row', backgroundColor: '#deddd9', borderRadius: 8, padding: 4, paddingHorizontal: 10 }}>
-                            <Text style={{ fontSize: 14, fontWeight: '500' }}>Contact</Text>
-                            <Zocial name='email' color='#cd220b' size={18} style={{ marginLeft: 10 }} />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.cardContainer}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardHeaderText}>Name :- <Text style={styles.cardHeaderTextBold}>User</Text></Text>
-                        <Text style={styles.cardHeaderText}>Email :- <Text style={styles.cardHeaderTextBold}>xyz@gmail.com</Text></Text>
-                    </View>
-
-                    <View style={styles.cardView}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.cardHeading}>Weight</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>500 KG</Text>
-                            <Text style={[styles.cardHeading, { marginTop: 20 }]}>Size</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>25 Mtr</Text>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.cardHeading}>Location</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>24 East, Japan</Text>
-                            <Text style={[styles.cardHeading, { marginTop: 20 }]}>Time</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', color: 'black', marginTop: 5 }}>25-Dec-2024, 7:00AM</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardFooter}>
-                        <TouchableOpacity style={styles.updateButton} onPress={() => setModalVisible(true)}>
-                            <Text style={styles.updateButtonText}>Update The Shipment</Text>
-                        </TouchableOpacity>
-
-                        <View style={[styles.statusContainer, { backgroundColor: statusColor }]}>
-                            <Text style={styles.statusText}>{status}</Text>
-                        </View>
-                    </View>
-
-                    <TouchableOpacity onPress={handleSendEmail} style={{ marginBottom: 10, alignItems: 'flex-end', marginHorizontal: 18 }}>
-                        <View style={{ flexDirection: 'row', backgroundColor: '#deddd9', borderRadius: 8, padding: 4, paddingHorizontal: 10 }}>
-                            <Text style={{ fontSize: 14, fontWeight: '500' }}>Contact</Text>
-                            <Zocial name='email' color='#cd220b' size={18} style={{ marginLeft: 10 }} />
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                    ))
+                ) : (
+                    <Text style={{ textAlign: 'center', marginTop: 20 }}>No shipments available</Text>
+                )}
             </ScrollView>
+
 
             <TouchableOpacity onPress={handleLogout} style={styles.logoutView}>
                 <MaterialIcons name='logout' color='white' size={30} style={{ paddingHorizontal: 10 }} />
@@ -267,13 +247,13 @@ const CustomerDashboard = ({ navigation }) => {
     );
 };
 
-export default CustomerDashboard;
+export default AdminDashboard;
 
 const styles = StyleSheet.create({
     TopContainer: {
         width: '100%',
         height: 200,
-        backgroundColor: '#cd220b',
+        backgroundColor: '#fc8019',
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
     },
@@ -299,14 +279,14 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         borderWidth: 1.5,
-        borderColor: '#cd220b',
+        borderColor: '#fc8019',
         marginHorizontal: 15,
         borderRadius: 10,
         marginTop: 20,
         backgroundColor: 'white',
     },
     cardHeader: {
-        backgroundColor: '#cd220b',
+        backgroundColor: '#fc8019',
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
         flexDirection: 'row',
@@ -329,7 +309,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     cardHeading: {
-        backgroundColor: '#cd220b',
+        backgroundColor: '#fc8019',
         color: 'white',
         borderRadius: 8,
         fontSize: 13,
@@ -342,7 +322,7 @@ const styles = StyleSheet.create({
         paddingBottom: 12
     },
     updateButton: {
-        backgroundColor: '#cd220b',
+        backgroundColor: '#fc8019',
         borderRadius: 20,
         paddingHorizontal: 25,
         paddingVertical: 7
@@ -359,8 +339,9 @@ const styles = StyleSheet.create({
     },
     statusText: {
         fontSize: 14,
-        color: 'white',
-        fontWeight: '500'
+        color: '#fc8019',
+        fontWeight: '800',
+        fontWeight:'500'
     },
     modalBackground: {
         flex: 1,

@@ -1,9 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, SafeAreaView, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, SafeAreaView, ScrollView, Dimensions, Alert } from 'react-native';
 import React, { useState, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import axios from 'axios';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const CreateShipment = ({ navigation }) => {
     const [totalWeight, setTotalWeight] = useState("");
@@ -33,11 +37,12 @@ const CreateShipment = ({ navigation }) => {
     };
 
     const handleDateConfirm = (date) => {
-        const dt = new Date(date);
-        const formattedDate = dt.toISOString().split('T')[0].split('-').reverse().join('-');
+        const formattedDate = moment(date).format('DD-MM-YYYY'); // Format as d-m-Y
         setSelectedDate(formattedDate);
         hideDatePicker();
     };
+    
+    
 
     const showTimePicker = () => {
         setTimePickerVisibility(true);
@@ -47,12 +52,50 @@ const CreateShipment = ({ navigation }) => {
         setTimePickerVisibility(false);
     };
 
+   
+
     const handleTimeConfirm = (time) => {
-        const dt = new Date(time);
-        const formattedTime = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const formattedTime = moment(time).format('hh:m A'); 
+        console.log('Formatted Time:', formattedTime); 
         setSelectedTime(formattedTime);
         hideTimePicker();
     };
+    
+    
+
+    const handleSubmit = async () => {
+        const token = await AsyncStorage.getItem('jwtToken');
+        console.log('Token:', token);
+    
+        const data = {
+            weight: totalWeight,
+            size: totalSize,
+            pickup_location: locationPickupValue,
+            shipment_date: selectedDate,
+            shipment_time: selectedTime,
+            additional_info: additionalInfo,
+            
+        };
+    
+        axios.post('http://192.168.1.142:8000/api/shipments', data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            console.log('Response Data:', response.data);
+            navigation.goBack();
+        })
+        .catch(error => {
+            if (error.response) {
+               
+            } else {
+                console.error('Error Message:', error.message);
+            }
+        });
+    };
+    
+    
 
     const [weight, setWeight] = useState([
         { label: 'kg', value: 'kilograms' },
@@ -65,21 +108,21 @@ const CreateShipment = ({ navigation }) => {
         { label: 'ft', value: 'feet' }
     ]);
     const [locationPickup, setLocationPickup] = useState([
-        { label: 'Kingdom Centre Tower', value: 'kingdom_centre_tower' },
-        { label: 'Edge of the World', value: 'edge_of_the_world' },
-        { label: 'Jeddah Corniche', value: 'jeddah_corniche' }
+        { label: 'Kingdom Centre Tower', value: 'Kingdom Centre Tower' },
+        { label: 'Edge of the World', value: 'Edge of the World' },
+        { label: 'Jeddah Corniche', value: 'Jeddah Corniche' }
     ]);
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView 
-                ref={scrollViewRef} 
-                showsVerticalScrollIndicator={false} 
-                contentContainerStyle={{ paddingBottom: 50 }} // added bottom padding
+            <ScrollView
+                ref={scrollViewRef}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 50 }} 
             >
                 <View style={styles.topHeadingView}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Ionicons name='arrow-back-circle-sharp' color='#cd220b' size={30} />
+                        <Ionicons name='arrow-back-circle-sharp' color='#fc8019' size={30} />
                     </TouchableOpacity>
                     <Text style={styles.titleText}>Create Shipment</Text>
                 </View>
@@ -95,6 +138,8 @@ const CreateShipment = ({ navigation }) => {
                                 autoCorrect={false}
                                 autoCapitalize='none'
                                 placeholderTextColor='black'
+                                keyboardType='numeric'
+
                             />
                         </View>
                         <View style={[styles.dropdownWrapper, { zIndex: weightOpen ? 3000 : 1000 }]}>
@@ -127,6 +172,7 @@ const CreateShipment = ({ navigation }) => {
                                 autoCorrect={false}
                                 autoCapitalize='none'
                                 placeholderTextColor='black'
+                                keyboardType='numeric'
                             />
                         </View>
                         <View style={[styles.dropdownWrapper, { zIndex: sizeOpen ? 3000 : 1000 }]}>
@@ -180,7 +226,7 @@ const CreateShipment = ({ navigation }) => {
                     </View>
 
                     <View style={styles.selectedDateTime}>
-                        <Text style={styles.selectedDateTimeText}>{selectedDate}  {selectedTime}</Text>
+                        <Text style={styles.selectedDateTimeText}>{selectedDate ? selectedDate :'dd-mm-yyyy'}  {selectedTime ? selectedTime :'hh:mm AM/PM' }</Text>
                     </View>
 
                     <DateTimePickerModal
@@ -213,7 +259,8 @@ const CreateShipment = ({ navigation }) => {
                     />
 
                 </View>
-                <TouchableOpacity style={styles.submitButton}>
+                
+                <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -244,7 +291,7 @@ const styles = StyleSheet.create({
         width: 120,
         height: 120,
         alignSelf: 'center',
-        marginTop:20
+        marginTop: 20
     },
     inputView: {
         paddingHorizontal: 10,
@@ -266,18 +313,18 @@ const styles = StyleSheet.create({
     input: {
         height: 50,
         paddingHorizontal: 10,
-        borderColor: "#cd220b",
+        borderColor: "#fc8019",
         borderWidth: 1,
         borderRadius: 10,
         backgroundColor: 'white',
     },
     dropdownContainer: {
-        borderColor: "#cd220b",
+        borderColor: "#fc8019",
     },
     datePicker: {
         height: 50,
         paddingHorizontal: 10,
-        borderColor: "#cd220b",
+        borderColor: "#fc8019",
         borderWidth: 1,
         borderRadius: 10,
         backgroundColor: 'white',
@@ -303,13 +350,13 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     submitButton: {
-        backgroundColor: "#cd220b",
+        backgroundColor: "#fc8019",
         borderRadius: 8,
         height: 45,
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 10,  // Adjusted margin to be inside the ScrollView
-        marginTop: 20, // Space between the button and the last input
+        marginHorizontal: 10, 
+        marginTop: 20, 
     },
     submitButtonText: {
         color: 'white',
