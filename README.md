@@ -74,8 +74,12 @@ Before you begin, ensure you have met the following requirements:
  
 ### Installing Dependencies
 git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+<br><br/>
 npm install
+<br><br/>
+yarn install
+
+
 ### To start 
 npx react-native run-android
 
